@@ -1,0 +1,11 @@
+$highlight-one:        #C20000; // company red
+
+$font-family-sans-serif:          Roboto, AppleSDGothicNeo-Regular, "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+// $font-size-base:                  16px;
+// $font-size-large:                 20px;
+// $font-size-small:                 13px;
+
+
+ion-nav-view ion-content {border-top:3px solid $highlight-one;}
+
+@import "ionic/scss/ionic";
