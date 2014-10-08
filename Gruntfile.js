@@ -136,7 +136,7 @@ module.exports = function (grunt) {
         options: {
           jshintrc: 'test/.jshintrc'
         },
-        src: ['test/unit/**/*.js']
+        src: ['app/**/*_test.js']
       }
     },
 
@@ -368,12 +368,11 @@ module.exports = function (grunt) {
           '<%= yeoman.app %>/bower_components/angular-animate/angular-animate.js',
           '<%= yeoman.app %>/bower_components/angular-sanitize/angular-sanitize.js',
           '<%= yeoman.app %>/bower_components/angular-ui-router/release/angular-ui-router.js',
-          '<%= yeoman.app %>/bower_components/ionic/release/js/ionic.js',
-          '<%= yeoman.app %>/bower_components/ionic/release/js/ionic-angular.js',
+          '<%= yeoman.app %>/bower_components/ionic/js/ionic.js',
+          '<%= yeoman.app %>/bower_components/ionic/js/ionic-angular.js',
           '<%= yeoman.app %>/bower_components/angular-mocks/angular-mocks.js',
-          '<%= yeoman.app %>/<%= yeoman.scripts %>/**/*.js',
-          'test/mock/**/*.js',
-          'test/spec/**/*.js'
+          '<%= yeoman.app %>/bower_components/angular-gettext/dist/angular-gettext.js',
+          '<%= yeoman.app %>{**, !(bower_components)}/*.js'
         ],
         autoWatch: false,
         reporters: ['dots', 'coverage'],
@@ -381,7 +380,8 @@ module.exports = function (grunt) {
         singleRun: false,
         preprocessors: {
           // Update this if you change the yeoman config path
-          'app/**/*.js': ['coverage']
+          // subdirectories excluding bower_components
+          '{app, app/!(bower_components)/**}/!(*test).js' : 'coverage'
         },
         coverageReporter: {
           reporters: [
@@ -493,7 +493,7 @@ module.exports = function (grunt) {
   // we don't have to run the karma test server as part of `grunt serve`
   grunt.registerTask('watch:karma', function () {
     var karma = {
-      files: ['<%= yeoman.app %>/<%= yeoman.scripts %>/**/*.js', 'test/spec/**/*.js'],
+      files: ['<%= yeoman.app %>/<%= yeoman.scripts %>/**/*.js', 'app/**/*_test.js'],
       tasks: ['newer:jshint:test', 'karma:unit:run']
     };
     grunt.config.set('watch', karma);
