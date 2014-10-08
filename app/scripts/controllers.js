@@ -1,5 +1,4 @@
 'use strict';
-'global angular:false';
 
 angular.module('Acionic.controllers', [])
 
