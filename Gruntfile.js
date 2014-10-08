@@ -23,7 +23,7 @@ module.exports = function (grunt) {
     yeoman: {
       // configurable paths
       app: 'app',
-      scripts: 'scripts',
+      scripts: '.',
       styles: 'styles',
       images: 'images'
     },
@@ -37,7 +37,7 @@ module.exports = function (grunt) {
         space: '  ',
         wrap: '"use strict";\n\n {%= __ngModule %}',
         name: 'config',
-        dest: '<%= yeoman.app %>/scripts/config.js'
+        dest: '<%= yeoman.app %>/config.js'
       },
       development: {
         constants: {
@@ -381,7 +381,7 @@ module.exports = function (grunt) {
         singleRun: false,
         preprocessors: {
           // Update this if you change the yeoman config path
-          'app/scripts/**/*.js': ['coverage']
+          'app/**/*.js': ['coverage']
         },
         coverageReporter: {
           reporters: [
@@ -426,7 +426,7 @@ module.exports = function (grunt) {
     nggettextCompile: {
       all: {
         files: {
-          'app/scripts/translations.js': ['po/*.po']
+          'app/translations.js': ['po/*.po']
         }
       }
     }
