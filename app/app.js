@@ -28,14 +28,14 @@ angular.module('Acionic', ['ionic', 'config', 'Acionic.controllers', 'gettext'])
     .state('app', {
       url: '/app',
       abstract: true,
-      templateUrl: 'templates/menu.html',
+      templateUrl: 'menu.html',
       controller: 'AppCtrl'
     })
     .state('app.home', {
       url: '/home',
       views: {
         'menuContent' :{
-          templateUrl: 'templates/home.html'
+          templateUrl: 'home.html'
         }
       }
     })
@@ -43,7 +43,7 @@ angular.module('Acionic', ['ionic', 'config', 'Acionic.controllers', 'gettext'])
       url: '/progress',
       views: {
         'menuContent' :{
-          templateUrl: 'templates/search.html'
+          templateUrl: 'search.html'
         }
       }
     })
@@ -51,7 +51,7 @@ angular.module('Acionic', ['ionic', 'config', 'Acionic.controllers', 'gettext'])
       url: '/browse',
       views: {
         'menuContent' :{
-          templateUrl: 'templates/browse.html'
+          templateUrl: 'browse.html'
         }
       }
     })
@@ -59,7 +59,7 @@ angular.module('Acionic', ['ionic', 'config', 'Acionic.controllers', 'gettext'])
       url: '/playlists',
       views: {
         'menuContent' :{
-          templateUrl: 'templates/playlists.html',
+          templateUrl: 'playlists.html',
           controller: 'PlaylistsCtrl'
         }
       }
@@ -68,7 +68,7 @@ angular.module('Acionic', ['ionic', 'config', 'Acionic.controllers', 'gettext'])
       url: '/playlists/:playlistId',
       views: {
         'menuContent' :{
-          templateUrl: 'templates/playlist.html',
+          templateUrl: 'playlist.html',
           controller: 'PlaylistCtrl'
         }
       }
