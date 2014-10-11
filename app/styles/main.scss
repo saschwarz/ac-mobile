@@ -1,11 +1,76 @@
-$highlight-one:        #C20000; // company red
+$font-size-larger:  20px;
+$color-1:        #AA0000; // company red
+$color-2:        #FCBE12; // company yellow
+$color-3:        #595854; // company medium graphite
 
+$item-image-width: 500px;
+$item-image-padding: 60px;
+
+// changes to ionic internal styles
 $font-family-sans-serif:          Roboto, AppleSDGothicNeo-Regular, "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
 // $font-size-base:                  16px;
 // $font-size-large:                 20px;
 // $font-size-small:                 13px;
 
-
-ion-nav-view ion-content {border-top:3px solid $highlight-one;}
-
 @import "ionic/scss/ionic";
+
+ion-nav-view ion-content.has-header {
+    border-top:5px solid $color-1;
+}
+.bar .title {
+    font-size: 20px;
+    text-transform: uppercase;
+}
+
+.underlined-1 {
+    border-bottom: 1px solid desaturate($color-1, 40%);
+    width: ($item-image-width - $item-image-padding);
+}
+.underlined-2 {
+    @extend .underlined-1;
+    border-bottom: 1px solid desaturate($color-2, 40%);
+}
+.underlined-3 {
+    @extend .underlined-1;
+    border-bottom: 1px solid desaturate($color-3, 40%);
+}
+
+.background-1 {
+    background-color: transparentize($color-1, 0.35);
+    padding-left: 6px;
+    padding-top: 5px;
+    width: 250px;
+}
+.background-2 {
+    @extend .background-1;
+    background-color: transparentize($color-2, 0.35);
+}
+.background-3 {
+    @extend .background-1;
+    background-color: transparentize($color-3, 0.35);
+}
+
+.item-image a {
+    background-repeat: no-repeat;
+    color: $light;
+    font-family: AppleSDGothicNeo-Regular;
+    font-size: $font-size-larger;
+    font-weight: bold;
+    height: 150px;
+    padding-top: 60px;
+    padding-left: $item-image-padding;
+    text-align: left;
+    text-transform: uppercase;
+}
+.item-image.courses-menu a {
+    background-image: url('http://lorempixel.com/500/150/sports/1');
+}
+.item-image.workouts-menu a {
+    background-image: url('http://lorempixel.com/500/150/sports/2');
+}
+.item-image.warmups-menu a {
+    background-image: url('http://lorempixel.com/500/150/sports/3');
+}
+.item-image.blank-courses a {
+    background-image: url('http://lorempixel.com/500/150/sports/4');
+}

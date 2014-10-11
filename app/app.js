@@ -1,12 +1,8 @@
 'use strict';
-// Ionic Starter App, v0.9.20
 
 // angular.module is a global place for creating, registering and retrieving Angular modules
-// 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
-// the 2nd parameter is an array of 'requires'
-// 'starter.services' is found in services.js
-// 'starter.controllers' is found in controllers.js
-angular.module('Acionic', ['ionic', 'config', 'Acionic.controllers', 'gettext'])
+
+angular.module('Acionic', ['ionic', 'config', 'Acionic.controllers', 'gettext', 'Acionic.layout'])
 .run(function($ionicPlatform, gettextCatalog) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
@@ -31,19 +27,22 @@ angular.module('Acionic', ['ionic', 'config', 'Acionic.controllers', 'gettext'])
       templateUrl: 'menu.html',
       controller: 'AppCtrl'
     })
-    .state('app.home', {
+    .state('home', {
       url: '/home',
+      parent: 'app',
       views: {
         'menuContent' :{
-          templateUrl: 'home.html'
+          templateUrl: 'home.html',
+          controller: 'HomeCtrl'
         }
       }
     })
-    .state('app.progress', {
-      url: '/progress',
+    .state('courses-menu', {
+      url: '/courses-menu',
+      parent: 'app',
       views: {
         'menuContent' :{
-          templateUrl: 'search.html'
+          templateUrl: 'courses-menu.html'
         }
       }
     })

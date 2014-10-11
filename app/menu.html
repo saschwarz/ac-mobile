@@ -10,12 +10,20 @@
   <ion-side-menu side="left" expose-aside-when="large">
     <ion-content>
       <ion-list>
-        <ion-item nav-clear menu-close ui-sref='app.home()'><i class="icon ion-ios7-home"></i> Home</ion-item>
-        <ion-item nav-clear menu-close ui-sref='app.progress()'><i class="icon ion-ios7-pulse"></i> Progress</ion-item>
-        <ion-item nav-clear menu-close href="#/app/skills">
-          <i class="ion-ios7-bookmarks"></i> Exercises</ion-item>
-        <ion-item nav-clear menu-close href="#/app/dogs"><i class="icon ion-ios7-paw"></i> Dogs</ion-item>
-        <ion-item nav-clear menu-close ng-click="login()"><i class="icon ion-ios7-gear"></i> Settings</ion-item>
+        <ion-item nav-clear menu-close ui-sref="home">
+          <i class="icon ion-ios7-home"></i> Home</ion-item>
+        <ion-item nav-clear menu-close ui-sref="warmups-menu">
+          <i class="icon ion-ios7-pulse"></i> Warm Ups</ion-item>
+        <ion-item nav-clear menu-close ui-sref="courses-menu">
+          <i class="ion-ios7-bookmarks-outline"></i> Exercises</ion-item>
+        <ion-item nav-clear menu-close ui-sref="workouts-menu">
+          <i class="icon ion-ios7-box-outline"></i> Workouts</ion-item>
+        <ion-item nav-clear menu-close ui-sref="blank-courses">
+          <i class="icon ion-grid"></i> Blank Courses</ion-item>
+        <ion-item nav-clear menu-close ui-sref="dogs">
+          <i class="icon ion-ios7-paw"></i> Dogs</ion-item>
+        <ion-item nav-clear menu-close ui-sref="settings">
+          <i class="icon ion-ios7-gear"></i> Settings</ion-item>
       </ion-list>
     </ion-content>
     <ion-footer-bar class="bar-stable">

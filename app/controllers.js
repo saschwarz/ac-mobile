@@ -2,11 +2,28 @@
 
 angular.module('Acionic.controllers', [])
 
-.controller('AppCtrl', function($scope, $ionicModal, $timeout) {
-  // Form data for the login modal
+.controller('AppCtrl', function($scope){
+      $scope.ENV = {APPNAME: 'Agility Courses',
+                    APPURL: 'http://agilitycourses.com/'};
+    })
+.controller('HomeCtrl', function($scope){
+    $scope.pages = [
+        {name: 'Exercises', state: 'courses-menu'},
+        {name: 'Workouts', state: 'workouts-menu'},
+        {name: 'Warm Ups', state: 'warmups-menu'},
+        {name: 'Blank Courses', state: 'blank-courses'},
+      ];
+  })
+.controller('CoursesMenuCtrl', function($scope){
+    $scope.pages = [
+        {name: 'Exercises', state: ''},
+        {name: 'Workouts', state: ''},
+        {name: 'Warm Ups', state: ''},
+        {name: 'Blank Courses', state: ''}
+      ];
+  })
+.controller('LoginCtrl', function($scope, $ionicModal, $timeout) {
   $scope.loginData = {};
-  $scope.ENV = {APPNAME: 'Agility Courses',
-                APPURL: 'http://agilitycourses.com/'};
 
   // Create the login modal that we will use later
   $ionicModal.fromTemplateUrl('login.html', {
