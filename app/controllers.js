@@ -15,11 +15,11 @@ angular.module('Acionic.controllers', [])
       ];
   })
 .controller('CoursesMenuCtrl', function($scope){
+    $scope.currentPage = [{name: 'Exercises', state: 'courses-menu'}];
     $scope.pages = [
-        {name: 'Exercises', state: ''},
-        {name: 'Workouts', state: ''},
-        {name: 'Warm Ups', state: ''},
-        {name: 'Blank Courses', state: ''}
+        {name: 'AgilityNerd Exercises', state: ''},
+        {name: 'Design Your Own', state: ''},
+        {name: 'Browse', state: ''}
       ];
   })
 .controller('LoginCtrl', function($scope, $ionicModal, $timeout) {

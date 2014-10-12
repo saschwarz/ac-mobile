@@ -21,7 +21,9 @@ ion-nav-view ion-content.has-header {
     font-size: 20px;
     text-transform: uppercase;
 }
-
+.color-1 {
+    color: $color-1;
+}
 .underlined-1 {
     border-bottom: 1px solid desaturate($color-1, 40%);
     width: ($item-image-width - $item-image-padding);
@@ -36,18 +38,18 @@ ion-nav-view ion-content.has-header {
 }
 
 .background-1 {
-    background-color: transparentize($color-1, 0.35);
+    background-color: transparentize($color-1, 0.15);
     padding-left: 6px;
     padding-top: 5px;
     width: 250px;
 }
 .background-2 {
     @extend .background-1;
-    background-color: transparentize($color-2, 0.35);
+    background-color: transparentize($color-2, 0.15);
 }
 .background-3 {
     @extend .background-1;
-    background-color: transparentize($color-3, 0.35);
+    background-color: transparentize($color-3, 0.15);
 }
 
 .item-image a {

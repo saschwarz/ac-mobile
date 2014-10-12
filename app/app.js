@@ -42,7 +42,8 @@ angular.module('Acionic', ['ionic', 'config', 'Acionic.controllers', 'gettext', 
       parent: 'app',
       views: {
         'menuContent' :{
-          templateUrl: 'courses-menu.html'
+          templateUrl: 'courses-menu.html',
+          controller: 'CoursesMenuCtrl'
         }
       }
     })

@@ -4,9 +4,13 @@
   </ion-nav-buttons>
   <ion-content class="has-header">
     <ion-list>
-      <ion-item></ion-item>
-      <ion-item class="item-icon-right" ng-repeat="action in actions" href="#{{action.sref}}">
-        {{action.name}}
+      <ion-item ng-repeat="page in currentPage" class="item item-image {{page.state}}" href="#{{page.state}}">
+        <item-image color="$index % 3 + 1" page="page"/>
+      </ion-item>
+      </ion-item>
+      <ion-item class="item-icon-right item-icon-left" ng-repeat="page in pages" href="#{{page.sref}}">
+        <i class="icon ion-stop color-1"></i>
+        {{page.name}}
         <i class="icon ion-chevron-right icon-accessory"></i>
       </ion-item>
     </ion-list>
