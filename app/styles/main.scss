@@ -17,13 +17,19 @@ $font-family-sans-serif:          Roboto, AppleSDGothicNeo-Regular, "Helvetica N
 ion-nav-view ion-content.has-header {
     border-top:5px solid $color-1;
 }
+
+.ac-item .icon {
+    font-size: 20px;
+}
 .bar .title {
     font-size: 20px;
     text-transform: uppercase;
 }
+
 .color-1 {
     color: $color-1;
 }
+
 .underlined-1 {
     border-bottom: 1px solid desaturate($color-1, 40%);
     width: ($item-image-width - $item-image-padding);
@@ -64,15 +70,15 @@ ion-nav-view ion-content.has-header {
     text-align: left;
     text-transform: uppercase;
 }
-.item-image.courses-menu a {
-    background-image: url('http://lorempixel.com/500/150/sports/1');
+.item-image.exercises-menu a {
+    background-image: url(('http://lorempixel.com/' + $item-image-width / 1px + '/150/sports/1'));
 }
 .item-image.workouts-menu a {
-    background-image: url('http://lorempixel.com/500/150/sports/2');
+    background-image: url('http://lorempixel.com/' + $item-image-width / 1px + '/150/sports/2');
 }
 .item-image.warmups-menu a {
-    background-image: url('http://lorempixel.com/500/150/sports/3');
+    background-image: url('http://lorempixel.com/' + $item-image-width / 1px + '/150/sports/3');
 }
 .item-image.blank-courses a {
-    background-image: url('http://lorempixel.com/500/150/sports/4');
+    background-image: url('http://lorempixel.com/' + $item-image-width / 1px + '/150/sports/4');
 }

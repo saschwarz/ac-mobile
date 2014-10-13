@@ -37,13 +37,13 @@ angular.module('Acionic', ['ionic', 'config', 'Acionic.controllers', 'gettext', 
         }
       }
     })
-    .state('courses-menu', {
-      url: '/courses-menu',
+    .state('exercises-menu', {
+      url: '/exercises-menu',
       parent: 'app',
       views: {
         'menuContent' :{
-          templateUrl: 'courses-menu.html',
-          controller: 'CoursesMenuCtrl'
+          templateUrl: 'exercises-menu.html',
+          controller: 'ExercisesMenuCtrl'
         }
       }
     })

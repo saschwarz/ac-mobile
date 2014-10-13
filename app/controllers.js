@@ -1,26 +1,17 @@
 'use strict';
 
-angular.module('Acionic.controllers', [])
+angular.module('Acionic.controllers', ['Acionic.services'])
 
 .controller('AppCtrl', function($scope){
       $scope.ENV = {APPNAME: 'Agility Courses',
                     APPURL: 'http://agilitycourses.com/'};
     })
-.controller('HomeCtrl', function($scope){
-    $scope.pages = [
-        {name: 'Exercises', state: 'courses-menu'},
-        {name: 'Workouts', state: 'workouts-menu'},
-        {name: 'Warm Ups', state: 'warmups-menu'},
-        {name: 'Blank Courses', state: 'blank-courses'},
-      ];
+.controller('HomeCtrl', function($scope, homeModel){
+    $scope.pages = homeModel.pages;
   })
-.controller('CoursesMenuCtrl', function($scope){
-    $scope.currentPage = [{name: 'Exercises', state: 'courses-menu'}];
-    $scope.pages = [
-        {name: 'AgilityNerd Exercises', state: ''},
-        {name: 'Design Your Own', state: ''},
-        {name: 'Browse', state: ''}
-      ];
+.controller('ExercisesMenuCtrl', function($scope, exercisesMenuModel){
+    $scope.currentPage = exercisesMenuModel.currentPage;
+    $scope.pages = exercisesMenuModel.pages;
   })
 .controller('LoginCtrl', function($scope, $ionicModal, $timeout) {
   $scope.loginData = {};
