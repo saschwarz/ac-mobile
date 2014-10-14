@@ -21,44 +21,46 @@ ion-nav-view ion-content.has-header {
 .ac-item .icon {
     font-size: 20px;
 }
+.courses {
+    color: $color-1;
+}
+.layout-name {
+    text-transform: capitalize;
+}
 .bar .title {
     font-size: 20px;
     text-transform: uppercase;
 }
 
-.color-1 {
-    color: $color-1;
-}
-
-.underlined-1 {
+.underlined-courses, .underlined-blankcourses {
     border-bottom: 1px solid desaturate($color-1, 40%);
     width: ($item-image-width - $item-image-padding);
 }
-.underlined-2 {
-    @extend .underlined-1;
+.underlined-workouts {
+    @extend .underlined-courses;
     border-bottom: 1px solid desaturate($color-2, 40%);
 }
-.underlined-3 {
-    @extend .underlined-1;
+.underlined-warmups {
+    @extend .underlined-courses;
     border-bottom: 1px solid desaturate($color-3, 40%);
 }
 
-.background-1 {
+.background-courses, .background-blankcourses {
     background-color: transparentize($color-1, 0.15);
     padding-left: 6px;
     padding-top: 5px;
     width: 250px;
 }
-.background-2 {
-    @extend .background-1;
+.background-workouts {
+    @extend .background-courses;
     background-color: transparentize($color-2, 0.15);
 }
-.background-3 {
-    @extend .background-1;
+.background-warmups {
+    @extend .background-courses;
     background-color: transparentize($color-3, 0.15);
 }
 
-.item-image a {
+.item-image {
     background-repeat: no-repeat;
     color: $light;
     font-family: AppleSDGothicNeo-Regular;
@@ -70,15 +72,15 @@ ion-nav-view ion-content.has-header {
     text-align: left;
     text-transform: uppercase;
 }
-.item-image.exercises-menu a {
+.item-image.courses {
     background-image: url(('http://lorempixel.com/' + $item-image-width / 1px + '/150/sports/1'));
 }
-.item-image.workouts-menu a {
+.item-image.workouts {
     background-image: url('http://lorempixel.com/' + $item-image-width / 1px + '/150/sports/2');
 }
-.item-image.warmups-menu a {
+.item-image.warmups {
     background-image: url('http://lorempixel.com/' + $item-image-width / 1px + '/150/sports/3');
 }
-.item-image.blank-courses a {
+.item-image.blankcourses {
     background-image: url('http://lorempixel.com/' + $item-image-width / 1px + '/150/sports/4');
 }

@@ -7,7 +7,7 @@ angular.module('Acionic.layout', [])
       replace: true,
       restrict: 'E',
       scope: {
-        color: '=',
+        section: '=',
         page: '='
       },
       templateUrl: 'item-image.tpl.html'

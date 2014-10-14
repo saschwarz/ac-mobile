@@ -4,8 +4,8 @@
   </ion-nav-buttons>
   <ion-content class="has-header">
     <ion-list>
-      <ion-item ng-repeat="page in pages" class="item item-image {{page.state}}" ui-sref='{{page.state}}'>
-        <item-image color="$index % 3 + 1" page="page"/>
+      <ion-item ng-repeat="page in pages" class="item item-image {{page.section}}" ui-sref='{{page.state}}'>
+        <item-image section="page.section" page="page"/>
       </ion-item>
     </ion-list>
   </ion-content>

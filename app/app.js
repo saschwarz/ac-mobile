@@ -37,13 +37,35 @@ angular.module('Acionic', ['ionic', 'config', 'Acionic.controllers', 'gettext', 
         }
       }
     })
-    .state('exercises-menu', {
-      url: '/exercises-menu',
+    .state('courses-menu', {
+      url: '/courses-menu',
       parent: 'app',
       views: {
         'menuContent' :{
-          templateUrl: 'exercises-menu.html',
-          controller: 'ExercisesMenuCtrl'
+          templateUrl: 'courses-menu.html',
+          controller: 'CoursesMenuCtrl'
+        }
+      }
+    })
+    .state('courses-group', {
+      url: '/courses/:groupId',
+      parent: 'app',
+      views: {
+        'menuContent' :{
+          templateUrl: 'courses-filtered.html',
+          controller: 'CoursesGroupCtrl'
+        }
+      }
+    })
+    .state('course-view', {
+      // View of an individual course.
+      // All courses (regardless of the layout on which they are based ) have a unique id.
+      url: '/courses/:courseId',
+      parent: 'app',
+      views: {
+        'menuContent' :{
+          templateUrl: 'courses-filtered.html',
+          controller: 'CoursesGroupCtrl'
         }
       }
     })

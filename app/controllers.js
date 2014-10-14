@@ -9,10 +9,22 @@ angular.module('Acionic.controllers', ['Acionic.services'])
 .controller('HomeCtrl', function($scope, homeModel){
     $scope.pages = homeModel.pages;
   })
-.controller('ExercisesMenuCtrl', function($scope, exercisesMenuModel){
-    $scope.currentPage = exercisesMenuModel.currentPage;
-    $scope.pages = exercisesMenuModel.pages;
+.controller('CoursesMenuCtrl', function($scope, settings, coursesMenuModel){
+    $scope.currentPage = _.assign({section: 'courses'}, coursesMenuModel.currentPage);
+    $scope.pages = _.forEach(settings.data.subscriptions.courses.concat(coursesMenuModel.pages),
+                             function(obj){_.assign({section: 'courses'}, obj)
+                                          });
   })
+.controller('CoursesGroupCtrl', function($stateParams, $scope, CourseGroupService){
+//    $scope.currentPage = coursesMenuModel.currentPage;
+    CourseGroupService.getCourses($stateParams.groupId).then(
+        function(courses){
+            $scope.courses = courses;
+        },
+        function(error) {
+            console.log(error);
+        });
+})
 .controller('LoginCtrl', function($scope, $ionicModal, $timeout) {
   $scope.loginData = {};
 
@@ -43,18 +55,4 @@ angular.module('Acionic.controllers', ['Acionic.services'])
       $scope.closeLogin();
     }, 1000);
   };
-})
-
-.controller('PlaylistsCtrl', function($scope) {
-  $scope.playlists = [
-    { title: 'Reggae', id: 1 },
-    { title: 'Chill', id: 2 },
-    { title: 'Dubstep', id: 3 },
-    { title: 'Indie', id: 4 },
-    { title: 'Rap', id: 5 },
-    { title: 'Cowbell', id: 6 }
-  ];
-})
-
-.controller('PlaylistCtrl', function() {
 });
