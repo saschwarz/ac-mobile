@@ -1,0 +1,22 @@
+<ion-view title="{{currentPage.name}}">
+  <ion-nav-buttons side="left">
+    <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
+  </ion-nav-buttons>
+  <ion-content class="has-header">
+    <ion-list>
+      <ion-item ng-repeat="page in currentPage" class="item item-image {{page.state}}" href="#{{page.state}}">
+        <item-image color="$index % 3 + 1" page="page"/>
+      </ion-item>
+      <ion-item class="item-thumbnail-left item-icon-right" ng-repeat="course in courses" ui-sref='{{course.state}}'>
+        <img src={{course.png}}>
+        <p><span class="layout-name">{{course.layout_name}}</span>: {{course.sequence}}</p>
+        <p>description goes here</p>
+        <p>Skills: </p>
+        <ul>
+          <li>180/270</li>
+        </ul>
+        <i class="icon ion-chevron-right icon-accessory"></i>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-view>
