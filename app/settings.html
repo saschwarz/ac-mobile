@@ -1,0 +1,53 @@
+<ion-view title="">
+  <ion-nav-buttons side="left">
+    <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
+  </ion-nav-buttons>
+  <ion-content class="has-header">
+    <ion-list>
+      <ion-item class="item item-image {{currentPage.section}}" href="#{{currentPage.state}}">
+        <item-image section="currentPage.section" page="currentPage"/>
+      </ion-item>
+      <ion-item>
+    </ion-list>
+    <form name="settingsForm" novalidate>
+      <div class="list">
+        <div id="messages" class="alert alert-success" data-ng-show="messages" data-ng-bind="messages"></div>
+        <div data-ng-show="progress.active()" style="color: red; font-size: 50px;" translate>Saving&hellip;</div>
+        <label class="item item-input">
+          <span class="input-label">First Name</span>
+          <input type="text" name="name" data-ng-model="user.first_name"/>
+        </label>
+        <label class="item item-input">
+          <span class="input-label">Last Name</span>
+          <input type="text" name="name" data-ng-model="user.last_name"/>
+        </label>
+        <label class="item item-input">
+          <span class="input-label">Username</span>
+          <input type="text" name="name" data-ng-model="user.username" required />
+        </label>
+        <label class="item item-input">
+          <span class="input-label">E-mail address</span>
+          <span class="label label-danger" data-ng-show="submitted && settingsForm.email.$error.required">Required!</span>
+          <span class="label label-danger" data-ng-show="submitted && settingsForm.$error.email">Invalid email!</span>
+          <input type="email" name="email" data-ng-model="user.email" required />
+        </label>
+        <label class="item item-input">
+          <span class="input-label" translate>Language</span>
+          <select name="languages" data-ng-model="languages" data-ng-options="id as value for (id, value) in languages" required>
+            <option value=""></option>
+          </select>
+          </label>
+      </div>
+      <div class="padding">
+        <button data-ng-disabled="progress.active()" data-ng-click="submit(settingsForm)" class="button button-block button-positive" translate>Save</button>
+      </div>
+    </form>
+    <ion-list>
+      <ion-item class="item-icon-right item-icon-left ac-item" ng-repeat="dog in dogs" ui-sref='{{dog.state}}'>
+        <i class="icon ion-stop courses"></i>
+        {{dog.name}}
+        <i class="icon ion-chevron-right icon-accessory"></i>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-view>
