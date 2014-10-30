@@ -1,8 +1,47 @@
 'use strict';
 
-angular.module('Acionic.services', ['restangular'])
-
-.service('settings', function(){
+angular.module('Acionic.services', ['restangular', 'LocalStorageModule'])
+.service('AuthTokenStorage', function(localStorageService){
+  var _authTokenName = 'com.agilitycourses.authToken';
+  this.setToken = function(token){
+    localStorageService.set(_authTokenName, token);
+  }
+  this.getToken = function(){
+    return localStorageService.get(_authTokenName);
+  }
+})
+.service('Login', function($http, Restangular, AuthTokenStorage){
+  this.login = function(username, password, successCB, errorCB){
+    var payload = {'username': username,
+                   'password': password};
+    var url = 'http://127.0.0.1:8000/rest-auth/login/';
+    return $http({
+      method: 'POST',
+      url: url,
+      transformRequest: function(obj) {
+        var str = [];
+        for(var p in obj)
+          str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+        return str.join("&");
+      },
+      data: payload,
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+    }).success(function(data, status, headers, config){
+      AuthTokenStorage.setToken(data.key);
+      Restangular.setDefaultHeaders({Authorization: 'Token ' + data.key})
+      successCB(data, status);
+    }).error(function(data, status, headers, config){
+      errorCB(data, status);
+    });
+  }
+})
+.factory('User', function(Restangular, AuthTokenStorage) {
+  // temporary
+  var key = AuthTokenStorage.getToken();
+  Restangular.setDefaultHeaders({Authorization: 'Token ' + key})
+  return Restangular.oneUrl('user', 'http://127.0.0.1:8000/rest-auth/user/');
+})
+.service('settings', function(Users){
     // TODO get this via API
     this.data = {
         user: {
@@ -102,7 +141,9 @@ angular.module('Acionic.services', ['restangular'])
   //  "svg": "http://agilitycourses.com/courses/box/ABNGFMFHNLBM.svg"
   //  "layout_id": 1,
   //  "layout_name": "box,
-  //  "description:" 'A description goes here"
+  //  "layout_uri": "http://agilitycourses.com/layouts/1",
+  //  "description": 'A description goes here",
+  //  "skills": ["180/270", "Threadle", "Serpentine"]
   // }
   // TODO:
   // 1. Add description

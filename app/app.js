@@ -18,9 +18,10 @@ angular.module('Acionic', ['ionic', 'config', 'Acionic.controllers', 'gettext', 
   });
 })
 
-.config(function($stateProvider, $urlRouterProvider) {
-  $stateProvider
+.config(function($stateProvider, $urlRouterProvider, RestangularProvider) {
+  RestangularProvider.setBaseUrl('http://127.0.0.1:8000/api/v2/');
 
+  $stateProvider
     .state('app', {
       url: '/app',
       abstract: true,
@@ -34,6 +35,23 @@ angular.module('Acionic', ['ionic', 'config', 'Acionic.controllers', 'gettext', 
         'menuContent' :{
           templateUrl: 'home.html',
           controller: 'HomeCtrl'
+        }
+      }
+    })
+    .state('settings', {
+      url: '/settings',
+      parent: 'app',
+      resolve: {
+        userProfile: function(User){
+          return User.get();
+        }
+      },
+      views: {
+        'menuContent' :{
+          templateUrl: 'settings.html',
+          controller: function($scope, userProfile){
+            $scope.user = userProfile;
+          }
         }
       }
     })
@@ -95,7 +113,6 @@ angular.module('Acionic', ['ionic', 'config', 'Acionic.controllers', 'gettext', 
         }
       }
     });
-
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/app/home');
 });

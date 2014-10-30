@@ -19,6 +19,9 @@
         <label class="item">
           <button class="button button-block button-positive" type="submit">Log in</button>
         </label>
+        <label class="item assertive" ng-show="loginData.error">
+          <span class="error">{{loginData.error}}</span>
+        </label>
       </div>
     </form>
   </ion-content>

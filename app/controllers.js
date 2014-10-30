@@ -2,30 +2,9 @@
 
 angular.module('Acionic.controllers', ['Acionic.services'])
 
-.controller('AppCtrl', function($scope){
+.controller('AppCtrl', function($scope, $ionicModal, Login){
       $scope.ENV = {APPNAME: 'Agility Courses',
                     APPURL: 'http://agilitycourses.com/'};
-    })
-.controller('HomeCtrl', function($scope, homeModel){
-    $scope.pages = homeModel.pages;
-  })
-.controller('CoursesMenuCtrl', function($scope, settings, coursesMenuModel){
-    $scope.currentPage = _.assign({section: 'courses'}, coursesMenuModel.currentPage);
-    $scope.pages = _.forEach(settings.data.subscriptions.courses.concat(coursesMenuModel.pages),
-                             function(obj){_.assign({section: 'courses'}, obj)
-                                          });
-  })
-.controller('CoursesGroupCtrl', function($stateParams, $scope, CourseGroupService){
-//    $scope.currentPage = coursesMenuModel.currentPage;
-    CourseGroupService.getCourses($stateParams.groupId).then(
-        function(courses){
-            $scope.courses = courses;
-        },
-        function(error) {
-            console.log(error);
-        });
-})
-.controller('LoginCtrl', function($scope, $ionicModal, $timeout) {
   $scope.loginData = {};
 
   // Create the login modal that we will use later
@@ -45,14 +24,38 @@ angular.module('Acionic.controllers', ['Acionic.services'])
     $scope.modal.show();
   };
 
+  $scope.loginError = function(data){
+    $scope.loginData.error = data.non_field_errors && data.non_field_errors[0];
+  }
   // Perform the login action when the user submits the login form
   $scope.doLogin = function() {
     console.log('Doing login', $scope.loginData);
-
-    // Simulate a login delay. Remove this and replace with your login
-    // code if using a login system
-    $timeout(function() {
-      $scope.closeLogin();
-    }, 1000);
+    Login.login($scope.loginData.username,
+                $scope.loginData.password,
+                $scope.closeLogin,
+                $scope.loginError);
   };
+    })
+.controller('HomeCtrl', function($scope, homeModel){
+    $scope.pages = homeModel.pages;
+  })
+.controller('SettingsCtrl', function($scope, settings){
+    $scope.currentPage = {section: 'settings'};
+    $scope.dogs = settings.data.dogs;
+  })
+.controller('CoursesMenuCtrl', function($scope, settings, coursesMenuModel){
+    $scope.currentPage = _.assign({section: 'courses'}, coursesMenuModel.currentPage);
+    $scope.pages = _.forEach(settings.data.subscriptions.courses.concat(coursesMenuModel.pages),
+                             function(obj){_.assign({section: 'courses'}, obj)
+                                          });
+  })
+.controller('CoursesGroupCtrl', function($stateParams, $scope, CourseGroupService){
+//    $scope.currentPage = coursesMenuModel.currentPage;
+    CourseGroupService.getCourses($stateParams.groupId).then(
+        function(courses){
+            $scope.courses = courses;
+        },
+        function(error) {
+            console.log(error);
+        });
 });
