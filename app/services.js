@@ -1,14 +1,27 @@
 'use strict';
 
 angular.module('Acionic.services', ['restangular', 'LocalStorageModule'])
+.factory('Languages', function(){
+  return [['en', 'English'],
+          ['es', 'Spanish'],
+          ['fr', 'French'],
+          ['ja', 'Japanese'],
+          ['de', 'German'],
+          ['fi', 'Finnish'],
+          ['it', 'Italian'],
+          ['pl', 'Polish'],
+          ['pt', 'Portuguese'],
+          ['lt', 'Lithuanian']
+         ];
+})
 .service('AuthTokenStorage', function(localStorageService){
   var _authTokenName = 'com.agilitycourses.authToken';
   this.setToken = function(token){
     localStorageService.set(_authTokenName, token);
-  }
+  };
   this.getToken = function(){
     return localStorageService.get(_authTokenName);
-  }
+  };
 })
 .service('Login', function($http, Restangular, AuthTokenStorage){
   this.login = function(username, password, successCB, errorCB){
@@ -35,13 +48,17 @@ angular.module('Acionic.services', ['restangular', 'LocalStorageModule'])
     });
   }
 })
-.factory('User', function(Restangular, AuthTokenStorage) {
-  // temporary
+.factory('User', function(Restangular, AuthTokenStorage, $q) {
   var key = AuthTokenStorage.getToken();
-  Restangular.setDefaultHeaders({Authorization: 'Token ' + key})
-  return Restangular.oneUrl('user', 'http://127.0.0.1:8000/rest-auth/user/');
+  Restangular.setDefaultHeaders({Authorization: 'Token ' + key});
+  var deferredUser = $q.defer();
+  return Restangular.oneUrl('rest-auth-user', 'http://127.0.0.1:8000/rest-auth/user/').get().then(
+    function(user){
+      return Restangular.oneUrl('users', user.url).get();
+    }
+  );
 })
-.service('settings', function(Users){
+.service('settings', function(User){
     // TODO get this via API
     this.data = {
         user: {

@@ -39,10 +39,6 @@ angular.module('Acionic.controllers', ['Acionic.services'])
 .controller('HomeCtrl', function($scope, homeModel){
     $scope.pages = homeModel.pages;
   })
-.controller('SettingsCtrl', function($scope, settings){
-    $scope.currentPage = {section: 'settings'};
-    $scope.dogs = settings.data.dogs;
-  })
 .controller('CoursesMenuCtrl', function($scope, settings, coursesMenuModel){
     $scope.currentPage = _.assign({section: 'courses'}, coursesMenuModel.currentPage);
     $scope.pages = _.forEach(settings.data.subscriptions.courses.concat(coursesMenuModel.pages),
