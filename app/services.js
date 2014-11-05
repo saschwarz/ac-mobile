@@ -65,26 +65,30 @@ angular.module('Acionic.services', ['restangular', 'LocalStorageModule'])
 
 })
 .service('User', function(Restangular, UserStorage) {
-  var _userId,  _user, that = this;
+  var _userId,  _user = {}, that = this;
 
   this.setUserId = function(id){
     _userId = id;
   };
 
   this.setUser = function(user){
-    console.log("setUser "+user);
     _user = user;
     UserStorage.setUser(user);
   };
 
   this.user = function(){
-    if (!_user){
+    if (_.isEmpty(_user)){
+      var user = UserStorage.getUser();
+      if (user){
+        this.setUserId(user.id);
+      }
+      // refresh from server to get latest data
       return Restangular.one('users', _userId).get().then(
         function(user) {
           that.setUser(user);
+          return user;
         });
     }
-    console.log("returning existing user " + _user);
     return _user;
   };
 })

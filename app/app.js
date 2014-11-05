@@ -26,6 +26,15 @@ angular.module('Acionic', ['ionic', 'config', 'Acionic.controllers', 'gettext', 
     .state('app', {
       url: '/app',
       abstract: true,
+      resolve: {
+        restSetup: function(Restangular, AuthTokenStorage){
+          var token = AuthTokenStorage.getToken();
+          if (token){
+            console.log("setting auth token");
+            Restangular.setDefaultHeaders({Authorization: 'Token ' + token});
+          }
+        }
+      },
       templateUrl: 'menu.html',
       controller: 'AppCtrl'
     })
