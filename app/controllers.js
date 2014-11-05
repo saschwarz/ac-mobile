@@ -2,7 +2,7 @@
 
 angular.module('Acionic.controllers', ['Acionic.services'])
 
-.controller('AppCtrl', function($scope, $ionicModal, Login){
+.controller('AppCtrl', function($scope, $ionicModal, Login, User){
       $scope.ENV = {APPNAME: 'Agility Courses',
                     APPURL: 'http://agilitycourses.com/'};
   $scope.loginData = {};
@@ -31,14 +31,25 @@ angular.module('Acionic.controllers', ['Acionic.services'])
   $scope.doLogin = function() {
     console.log('Doing login', $scope.loginData);
     Login.login($scope.loginData.username,
-                $scope.loginData.password,
-                $scope.closeLogin,
-                $scope.loginError);
+                $scope.loginData.password)
+      .then($scope.closeLogin)
+      .catch($scope.loginError)
+      .then(User.user);
   };
     })
 .controller('HomeCtrl', function($scope, homeModel){
     $scope.pages = homeModel.pages;
   })
+.controller('SettingsCtrl',  function($scope, user, languages){
+  $scope.user = user;
+  $scope.languages = languages;
+
+  $scope.updateUser = function(form){
+    if (!form.$invalid){
+      user.put();
+    }
+  }
+})
 .controller('CoursesMenuCtrl', function($scope, settings, coursesMenuModel){
     $scope.currentPage = _.assign({section: 'courses'}, coursesMenuModel.currentPage);
     $scope.pages = _.forEach(settings.data.subscriptions.courses.concat(coursesMenuModel.pages),

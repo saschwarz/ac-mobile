@@ -43,22 +43,15 @@ angular.module('Acionic', ['ionic', 'config', 'Acionic.controllers', 'gettext', 
       url: '/settings',
       parent: 'app',
       resolve: {
-        userProfile: 'User',
+        user: function(User){
+          return User.user()
+        },
         languages: 'Languages'
       },
       views: {
         'menuContent' :{
           templateUrl: 'settings.html',
-          controller: function($scope, userProfile, languages){
-            $scope.user = userProfile;
-            $scope.languages = languages;
-
-            $scope.updateUser = function(form){
-              if (!form.$invalid){
-                userProfile.put();
-              }
-            }
-          }
+          controller: 'SettingsCtrl'
         }
       }
     })

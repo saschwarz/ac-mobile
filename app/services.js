@@ -23,8 +23,19 @@ angular.module('Acionic.services', ['restangular', 'LocalStorageModule'])
     return localStorageService.get(_authTokenName);
   };
 })
-.service('Login', function($http, Restangular, AuthTokenStorage){
-  this.login = function(username, password, successCB, errorCB){
+.service('UserStorage', function(localStorageService){
+  var _userKeyName = 'com.agilitycourses.user';
+  this.setUser = function(userKey){
+    localStorageService.set(_userKeyName, userKey);
+  };
+  this.getUser = function(){
+    return localStorageService.get(_userKeyName);
+  };
+})
+.service('Login', function($http, Restangular, AuthTokenStorage, User){
+  var that = this;
+
+  this.login = function(username, password){
     var payload = {'username': username,
                    'password': password};
     var url = 'http://127.0.0.1:8000/rest-auth/login/';
@@ -41,22 +52,41 @@ angular.module('Acionic.services', ['restangular', 'LocalStorageModule'])
       headers: {'Content-Type': 'application/x-www-form-urlencoded'}
     }).success(function(data, status, headers, config){
       AuthTokenStorage.setToken(data.key);
-      Restangular.setDefaultHeaders({Authorization: 'Token ' + data.key})
-      successCB(data, status);
-    }).error(function(data, status, headers, config){
-      errorCB(data, status);
-    });
-  }
+      Restangular.setDefaultHeaders({Authorization: 'Token ' + data.key});
+    }).then(that.getUser);
+  };
+
+  this.getUser = function(){
+    return Restangular.oneUrl('rest-auth-user', 'http://127.0.0.1:8000/rest-auth/user/').get()
+      .then(function(data){
+        User.setUserId(data.id);
+      });
+  };
+
 })
-.factory('User', function(Restangular, AuthTokenStorage, $q) {
-  var key = AuthTokenStorage.getToken();
-  Restangular.setDefaultHeaders({Authorization: 'Token ' + key});
-  var deferredUser = $q.defer();
-  return Restangular.oneUrl('rest-auth-user', 'http://127.0.0.1:8000/rest-auth/user/').get().then(
-    function(user){
-      return Restangular.oneUrl('users', user.url).get();
+.service('User', function(Restangular, UserStorage) {
+  var _userId,  _user, that = this;
+
+  this.setUserId = function(id){
+    _userId = id;
+  };
+
+  this.setUser = function(user){
+    console.log("setUser "+user);
+    _user = user;
+    UserStorage.setUser(user);
+  };
+
+  this.user = function(){
+    if (!_user){
+      return Restangular.one('users', _userId).get().then(
+        function(user) {
+          that.setUser(user);
+        });
     }
-  );
+    console.log("returning existing user " + _user);
+    return _user;
+  };
 })
 .service('settings', function(User){
     // TODO get this via API
