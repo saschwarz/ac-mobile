@@ -1,4 +1,4 @@
-<ion-view title="">
+<ion-view title="Settings">
   <ion-nav-buttons side="left">
     <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
   </ion-nav-buttons>
@@ -7,10 +7,17 @@
       <ion-item class="item item-image {{currentPage.section}}" href="#{{currentPage.state}}">
         <item-image section="currentPage.section" page="currentPage"/>
       </ion-item>
-      <ion-item>
     </ion-list>
     <form ng-submit="updateUser(user)" novalidate>
       <div class="list">
+        <ion-item class="item-icon-right" ui-sref='preferences'>
+          <span>Preferences</span>
+          <i class="icon ion-chevron-right icon-accessory"></i>
+        </ion-item>
+        <ion-item class="item-icon-right" ui-sref="dogs">
+          <span>Dogs</span>
+          <i class="icon ion-chevron-right icon-accessory"></i>
+        </ion-item>
         <div id="messages" class="alert alert-success" ng-show="messages" ng-bind="messages"></div>
         <div ng-show="progress.active()" style="color: red; font-size: 50px;" translate>Saving&hellip;</div>
         <label class="item item-input">
@@ -23,11 +30,7 @@
         </label>
         <label class="item item-input">
           <span class="input-label">Username</span>
-          <input type="text" name="name" ng-model="user.username" required />
-        </label>
-        <label class="item item-input">
-          <span class="input-label">URL</span>
-          <input type="text" name="name" ng-model="user.url" />
+          <input type="text" name="name" ng-model="user.username" readonly />
         </label>
         <label class="item item-input">
           <span class="input-label">E-mail address</span>
@@ -36,22 +39,13 @@
           <input type="email" name="email" ng-model="user.email" required />
         </label>
         <label class="item item-input">
-          <span class="input-label" translate>Language</span>
-          <select name="languages" ng-model="user.profile.lang">
-            <option ng-repeat="lang in languages" value="{{lang.0}}">{{lang.1}}</option>
-          </select>
-          </label>
+          <span class="input-label">Joined</span>
+          <input type="text" value="{{user.date_joined | date:'fullDate'}}" readonly />
+        </label>
       </div>
       <div class="padding">
         <button type="submit" ng-disabled="progress.active()" class="button button-block button-positive" translate>Save</button>
       </div>
     </form>
-    <ion-list>
-      <ion-item class="item-icon-right item-icon-left ac-item" ng-repeat="dog in dogs" ui-sref='{{dog.state}}'>
-        <i class="icon ion-stop courses"></i>
-        {{dog.name}}
-        <i class="icon ion-chevron-right icon-accessory"></i>
-      </ion-item>
-    </ion-list>
   </ion-content>
 </ion-view>

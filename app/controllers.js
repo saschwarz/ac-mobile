@@ -3,8 +3,8 @@
 angular.module('Acionic.controllers', ['Acionic.services'])
 
 .controller('AppCtrl', function($scope, $ionicModal, Login, User){
-      $scope.ENV = {APPNAME: 'Agility Courses',
-                    APPURL: 'http://agilitycourses.com/'};
+  $scope.ENV = {APPNAME: 'Agility Courses',
+                APPURL: 'http://agilitycourses.com/'};
   $scope.loginData = {};
 
   // Create the login modal that we will use later
@@ -40,13 +40,22 @@ angular.module('Acionic.controllers', ['Acionic.services'])
 .controller('HomeCtrl', function($scope, homeModel){
     $scope.pages = homeModel.pages;
   })
-.controller('SettingsCtrl',  function($scope, user, languages){
+.controller('SettingsCtrl',  function($scope, user){
   $scope.user = user;
-  $scope.languages = languages;
 
   $scope.updateUser = function(form){
     if (!form.$invalid){
       user.put();
+    }
+  }
+})
+.controller('PreferencesCtrl',  function($scope, userProfile, languages){
+  $scope.profile = userProfile;
+  $scope.languages = languages;
+
+  $scope.updateProfile = function(form){
+    if (!form.$invalid){
+      $scope.profile.put();
     }
   }
 })

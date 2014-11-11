@@ -64,7 +64,7 @@ angular.module('Acionic.services', ['restangular', 'LocalStorageModule'])
   };
 
 })
-.service('User', function(Restangular, UserStorage) {
+.service('User', function($q, Restangular, UserStorage) {
   var _userId,  _user = {}, that = this;
 
   this.setUserId = function(id){
@@ -89,7 +89,16 @@ angular.module('Acionic.services', ['restangular', 'LocalStorageModule'])
           return user;
         });
     }
-    return _user;
+    return $q.when(_user);
+  };
+})
+.service('UserProfile', function(Restangular, User) {
+  this.profile = function(){
+    return User.user().then(function(user){
+      return Restangular.withConfig(function(config){
+        config.setRestangularFields({selfLink: 'url'});
+      }).oneUrl(user.profile, user.profile).get();
+    });
   };
 })
 .service('settings', function(User){

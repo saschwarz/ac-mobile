@@ -53,14 +53,29 @@ angular.module('Acionic', ['ionic', 'config', 'Acionic.controllers', 'gettext', 
       parent: 'app',
       resolve: {
         user: function(User){
-          return User.user()
-        },
-        languages: 'Languages'
+          return User.user();
+        }
       },
       views: {
         'menuContent' :{
           templateUrl: 'settings.html',
           controller: 'SettingsCtrl'
+        }
+      }
+    })
+    .state('preferences', {
+      url: '/preferences',
+      parent: 'app',
+      resolve: {
+        userProfile: function(UserProfile){
+          return UserProfile.profile();
+        },
+        languages: 'Languages'
+      },
+      views: {
+        'menuContent' :{
+          templateUrl: 'preferences.html',
+          controller: 'PreferencesCtrl'
         }
       }
     })
