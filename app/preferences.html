@@ -18,6 +18,10 @@
             <option ng-repeat="lang in languages" value="{{lang.0}}">{{lang.1}}</option>
           </select>
           </label>
+        <label class="item item-input">
+          <span class="input-label" translate>Avatar</span>
+          <img ng-src="http://10.0.0.4:8000/media/{{profile.avatar}}" />
+        </label>
       </div>
       <div class="padding">
         <button type="submit" ng-disabled="progress.active()" class="button button-block button-positive" translate>Save</button>

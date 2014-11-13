@@ -16,76 +16,98 @@ angular.module('Acionic.services', ['restangular', 'LocalStorageModule'])
 })
 .service('AuthTokenStorage', function(localStorageService){
   var _authTokenName = 'com.agilitycourses.authToken';
-  this.setToken = function(token){
+  this.set = function(token){
     localStorageService.set(_authTokenName, token);
   };
-  this.getToken = function(){
+  this.get = function(){
+    return localStorageService.get(_authTokenName);
+  };
+  this.remove = function(){
     return localStorageService.get(_authTokenName);
   };
 })
 .service('UserStorage', function(localStorageService){
   var _userKeyName = 'com.agilitycourses.user';
-  this.setUser = function(userKey){
+  this.set = function(userKey){
     localStorageService.set(_userKeyName, userKey);
   };
-  this.getUser = function(){
+  this.get = function(){
     return localStorageService.get(_userKeyName);
+  };
+  this.clearUser = function(){
+    return localStorageService.remove(_userKeyName);
   };
 })
 .service('Login', function($http, Restangular, AuthTokenStorage, User){
-  var that = this;
+  var _this = this;
 
   this.login = function(username, password){
     var payload = {'username': username,
                    'password': password};
-    var url = 'http://127.0.0.1:8000/rest-auth/login/';
+    var url = 'http://10.0.0.4:8000/rest-auth/login/';
     return $http({
       method: 'POST',
       url: url,
       transformRequest: function(obj) {
         var str = [];
-        for(var p in obj)
-          str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
-        return str.join("&");
+        for(var p in obj) {
+          str.push(encodeURIComponent(p) + '=' + encodeURIComponent(obj[p]));
+        }
+        return str.join('&');
       },
       data: payload,
       headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-    }).success(function(data, status, headers, config){
-      AuthTokenStorage.setToken(data.key);
-      Restangular.setDefaultHeaders({Authorization: 'Token ' + data.key});
-    }).then(that.getUser);
+    }).then(function(response){
+      var key = response.data.key;
+      AuthTokenStorage.set(key);
+      Restangular.setDefaultHeaders({Authorization: 'Token ' + key});
+      User.clearUser();
+      return _this.get();
+    })
+    .catch(function(e){
+      console.log(e);
+    });
   };
 
-  this.getUser = function(){
-    return Restangular.oneUrl('rest-auth-user', 'http://127.0.0.1:8000/rest-auth/user/').get()
+  this.get = function(){
+    return Restangular.oneUrl('rest-auth-user', 'http://10.0.0.4:8000/rest-auth/user/').get()
       .then(function(data){
+        console.log(data);
         User.setUserId(data.id);
+    //   })
+    // .catch(function(e){
+    //   console.log(e);
       });
   };
 
 })
 .service('User', function($q, Restangular, UserStorage) {
-  var _userId,  _user = {}, that = this;
+  var _userId,  _user = {}, _this = this;
 
   this.setUserId = function(id){
     _userId = id;
   };
 
-  this.setUser = function(user){
+  this.set = function(user){
     _user = user;
-    UserStorage.setUser(user);
+    UserStorage.set(user);
+  };
+
+  this.clearUser = function(){
+    _user = {};
+    UserStorage.clearUser();
   };
 
   this.user = function(){
     if (_.isEmpty(_user)){
-      var user = UserStorage.getUser();
+      var user = UserStorage.get();
       if (user){
-        this.setUserId(user.id);
+        _this.setUserId(user.id);
       }
       // refresh from server to get latest data
       return Restangular.one('users', _userId).get().then(
         function(user) {
-          that.setUser(user);
+          _this.set(user);
           return user;
         });
     }
@@ -101,7 +123,7 @@ angular.module('Acionic.services', ['restangular', 'LocalStorageModule'])
     });
   };
 })
-.service('settings', function(User){
+.service('settings', function(){
     // TODO get this via API
     this.data = {
         user: {
@@ -159,7 +181,7 @@ angular.module('Acionic.services', ['restangular', 'LocalStorageModule'])
 })
 
 .factory('CourseGroupService', function(Restangular){
-  var responseInterceptor = function(data, operation, what, url, response, deferred) {
+  var responseInterceptor = function(data, operation) {
     var extractedData;
     // .. to look for getList operations
     if (operation === 'getList') {

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('Acionic.controllers', ['Acionic.services'])
+angular.module('Acionic.controllers', ['Acionic.services', 'ngCordova'])
 
 .controller('AppCtrl', function($scope, $ionicModal, Login, User){
   $scope.ENV = {APPNAME: 'Agility Courses',
@@ -26,7 +26,7 @@ angular.module('Acionic.controllers', ['Acionic.services'])
 
   $scope.loginError = function(data){
     $scope.loginData.error = data.non_field_errors && data.non_field_errors[0];
-  }
+  };
   // Perform the login action when the user submits the login form
   $scope.doLogin = function() {
     console.log('Doing login', $scope.loginData);
@@ -47,24 +47,43 @@ angular.module('Acionic.controllers', ['Acionic.services'])
     if (!form.$invalid){
       user.put();
     }
-  }
+  };
 })
-.controller('PreferencesCtrl',  function($scope, userProfile, languages){
+.controller('PreferencesCtrl',  function($scope, userProfile, languages, $cordovaFile){
   $scope.profile = userProfile;
   $scope.languages = languages;
 
   $scope.updateProfile = function(form){
     if (!form.$invalid){
-      $scope.profile.put();
+//      $scope.profile.put();
+      var profile = $scope.profile;
+      var options = new FileUploadOptions();
+      options.fileKey = 'avatar';
+      options.fileName = profile.avatar;
+      options.mimeType = 'image/jpeg';
+      var uri = profile.url;
+      console.log(profile.avatar);
+      console.log(uri);
+
+      $cordovaFile.uploadFile(profile.avatar, uri, options)
+        .then(function(result) {
+          // Success!
+          console.log(result);
+        }, function(err) {
+          // Error
+          console.log(err);
+        }, function (progress) {
+          // constant progress updates
+        });
     }
-  }
+  };
 })
 .controller('CoursesMenuCtrl', function($scope, settings, coursesMenuModel){
     $scope.currentPage = _.assign({section: 'courses'}, coursesMenuModel.currentPage);
     $scope.pages = _.forEach(settings.data.subscriptions.courses.concat(coursesMenuModel.pages),
-                             function(obj){_.assign({section: 'courses'}, obj)
+                             function(obj){_.assign({section: 'courses'}, obj);
                                           });
-  })
+})
 .controller('CoursesGroupCtrl', function($stateParams, $scope, CourseGroupService){
 //    $scope.currentPage = coursesMenuModel.currentPage;
     CourseGroupService.getCourses($stateParams.groupId).then(
