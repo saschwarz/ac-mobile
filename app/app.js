@@ -7,10 +7,10 @@ angular.module('Acionic', ['ionic', 'config', 'Acionic.controllers', 'gettext', 
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
-    // if(window.cordova && window.cordova.plugins.Keyboard) {
-    //   window.cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
-    // }
-    if(window.StatusBar) {
+    if (window.cordova && window.cordova.plugins.Keyboard) {
+      window.cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+    }
+    if (window.StatusBar) {
       // org.apache.cordova.statusbar required
       window.StatusBar.styleDefault();
     }
@@ -18,7 +18,8 @@ angular.module('Acionic', ['ionic', 'config', 'Acionic.controllers', 'gettext', 
   });
 })
 
-.config(function($stateProvider, $urlRouterProvider, RestangularProvider) {
+.config(function($stateProvider, $urlRouterProvider, RestangularProvider, $compileProvider) {
+  $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|file|content|cdvfile):|data:image\//);
   RestangularProvider.setBaseUrl('http://10.0.0.4:8000/api/v2/');
   RestangularProvider.setRequestSuffix('/');
 
@@ -30,7 +31,6 @@ angular.module('Acionic', ['ionic', 'config', 'Acionic.controllers', 'gettext', 
         restSetup: function(Restangular, AuthTokenStorage){
           var token = AuthTokenStorage.get();
           if (token){
-            console.log("setting auth token");
             Restangular.setDefaultHeaders({Authorization: 'Token ' + token});
           }
         }

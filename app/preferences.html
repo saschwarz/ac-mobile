@@ -14,13 +14,15 @@
         <div ng-show="progress.active()" style="color: red; font-size: 50px;" translate>Saving&hellip;</div>
         <label class="item item-input">
           <span class="input-label" translate>Language</span>
-          <select name="languages" ng-model="profile.lang">
-            <option ng-repeat="lang in languages" value="{{lang.0}}">{{lang.1}}</option>
+          <select
+                  ng-model="profile.lang"
+                  ng-options="l[0] as l[1] for l in languages">
           </select>
           </label>
         <label class="item item-input">
           <span class="input-label" translate>Avatar</span>
-          <img ng-src="http://10.0.0.4:8000/media/{{profile.avatar}}" />
+          <img width="100px;" ng-src="{{profile.avatar_url}}" />
+          <button type='button' ng-click="getPhoto()" translate>Select Photo</button>
         </label>
       </div>
       <div class="padding">

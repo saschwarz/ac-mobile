@@ -2,11 +2,17 @@
 
 angular.module('Acionic.controllers', ['Acionic.services', 'ngCordova'])
 
-.controller('AppCtrl', function($scope, $ionicModal, Login, User){
+.controller('AppCtrl', function($scope, $ionicModal, Login, User, UserStorage){
   $scope.ENV = {APPNAME: 'Agility Courses',
                 APPURL: 'http://agilitycourses.com/'};
-  $scope.loginData = {};
+  $scope.loginData = {username: '',
+                      password: ''};
 
+  // prepopulate username on login dialog if we've previously logged in
+  var user = UserStorage.get();
+  if (!_.isEmpty(user)){
+    $scope.loginData.username = user.username;
+  }
   // Create the login modal that we will use later
   $ionicModal.fromTemplateUrl('login.html', {
     scope: $scope
@@ -49,34 +55,66 @@ angular.module('Acionic.controllers', ['Acionic.services', 'ngCordova'])
     }
   };
 })
-.controller('PreferencesCtrl',  function($scope, userProfile, languages, $cordovaFile){
+.controller('PreferencesCtrl',  function($scope, userProfile, languages, $cordovaFile, $cordovaCamera, AuthTokenStorage){
+  var _imageChanged = false;
+  console.log('lang:'+userProfile.lang);
   $scope.profile = userProfile;
   $scope.languages = languages;
 
-  $scope.updateProfile = function(form){
-    if (!form.$invalid){
-//      $scope.profile.put();
-      var profile = $scope.profile;
-      var options = new FileUploadOptions();
-      options.fileKey = 'avatar';
-      options.fileName = profile.avatar;
-      options.mimeType = 'image/jpeg';
-      var uri = profile.url;
-      console.log(profile.avatar);
-      console.log(uri);
-
-      $cordovaFile.uploadFile(profile.avatar, uri, options)
-        .then(function(result) {
-          // Success!
-          console.log(result);
-        }, function(err) {
-          // Error
-          console.log(err);
-        }, function (progress) {
-          // constant progress updates
-        });
-    }
+  $scope.getPhoto = function() {
+    // Retrieve image file location from specified source
+    $cordovaCamera.getPicture({ quality: 50,
+                                destinationType: Camera.DestinationType.FILE_URI,
+                                sourceType: Camera.PictureSourceType.PHOTOLIBRARY })
+    .then(function(image){
+      $scope.profile.avatar = image;
+      $scope.profile.avatar_url = image;
+      _imageChanged = true;
+    });
   };
+
+  $scope.updateProfile = function(form){
+    var profile = $scope.profile;
+    var params = {lang: profile.lang};
+    console.log('lang:'+profile.lang);
+
+    if (!form.$invalid){
+      if (_imageChanged){
+        var options = new FileUploadOptions();
+        // get filename from full path
+        var filename = profile.avatar.substr(profile.avatar.lastIndexOf("/")+1);
+        console.log('filename:'+filename);
+        options.fileKey = 'avatar';
+        options.fileName = filename;
+        options.mimeType = 'image/jpeg';
+        options.httpMethod = 'PUT';
+        options.headers = _.assign({'Authorization': 'Token ' + AuthTokenStorage.get()}, options.headers);
+        options.params = params;
+
+        var uri = profile.url;
+        var fileSrc = profile.avatar;
+        if (fileSrc.lastIndexOf(':') == -1){
+          fileSrc = '';
+        }
+        console.log('fileSrc:'+fileSrc);
+        $cordovaFile.uploadFile(uri, fileSrc, options)
+          .then(function(result) {
+            // Success!
+            console.log('success:'+result);
+            _imageChanged = false; // allow image to change again once saved
+          }, function(err) {
+            // Error
+            _.forOwn(err, function(num, key){console.log(key +":" + err[key])});
+            console.log('err:'+err);
+          }, function (progress) {
+            // constant progress updates
+          });
+      } else {
+        // image didn't change use PATCH to update other field(s)
+        profile.patch(params);
+      }
+    };
+  }
 })
 .controller('CoursesMenuCtrl', function($scope, settings, coursesMenuModel){
     $scope.currentPage = _.assign({section: 'courses'}, coursesMenuModel.currentPage);

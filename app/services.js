@@ -79,7 +79,6 @@ angular.module('Acionic.services', ['restangular', 'LocalStorageModule'])
     //   console.log(e);
       });
   };
-
 })
 .service('User', function($q, Restangular, UserStorage) {
   var _userId,  _user = {}, _this = this;
