@@ -8,26 +8,25 @@
         <item-image section="currentPage.section" page="currentPage"/>
       </ion-item>
     </ion-list>
+    <fieldset ng-disabled="isSaving">
     <form ng-submit="updateProfile(profile)" novalidate>
-      <div class="list">
+      <div class="list list-inset">
         <div id="messages" class="alert alert-success" ng-show="messages" ng-bind="messages"></div>
         <div ng-show="progress.active()" style="color: red; font-size: 50px;" translate>Saving&hellip;</div>
-        <label class="item item-input">
+        <label class="item item-input item-select">
           <span class="input-label" translate>Language</span>
-          <select
-                  ng-model="profile.lang"
+          <select ng-model="profile.lang"
                   ng-options="l[0] as l[1] for l in languages">
           </select>
           </label>
         <label class="item item-input">
           <span class="input-label" translate>Avatar</span>
-          <img width="100px;" ng-src="{{profile.avatar_url}}" />
-          <button type='button' ng-click="getPhoto()" translate>Select Photo</button>
+          <img class="avatar" ng-src="{{profile.avatar}}" />
+          <button type='button' ng-click="getPhoto()" class="button button-small ac-inline-button" translate>Select Photo</button>
         </label>
-      </div>
-      <div class="padding">
-        <button type="submit" ng-disabled="progress.active()" class="button button-block button-positive" translate>Save</button>
+        <button type="submit" ng-disabled="progress.active()" class="button button-block button-positive icon-right" translate>Save  <span><i class="ion-ios7-reloading" ng-cloak ng-show="isSaving"></i></span></button>
       </div>
     </form>
+    </formset>
   </ion-content>
 </ion-view>

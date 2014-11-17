@@ -2,7 +2,7 @@
 
 // angular.module is a global place for creating, registering and retrieving Angular modules
 
-angular.module('Acionic', ['ionic', 'config', 'Acionic.controllers', 'gettext', 'Acionic.layout'])
+angular.module('Acionic', ['ionic', 'ngAnimate', 'config', 'Acionic.controllers', 'gettext', 'angular-growl', 'Acionic.layout'])
 .run(function($ionicPlatform, gettextCatalog) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
@@ -18,10 +18,12 @@ angular.module('Acionic', ['ionic', 'config', 'Acionic.controllers', 'gettext', 
   });
 })
 
-.config(function($stateProvider, $urlRouterProvider, RestangularProvider, $compileProvider) {
+.config(function($stateProvider, $urlRouterProvider, RestangularProvider, $compileProvider, growlProvider) {
   $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|file|content|cdvfile):|data:image\//);
   RestangularProvider.setBaseUrl('http://10.0.0.4:8000/api/v2/');
   RestangularProvider.setRequestSuffix('/');
+
+  growlProvider.globalTimeToLive(4000);
 
   $stateProvider
     .state('app', {
@@ -42,7 +44,7 @@ angular.module('Acionic', ['ionic', 'config', 'Acionic.controllers', 'gettext', 
       url: '/home',
       parent: 'app',
       views: {
-        'menuContent' :{
+        menuContent :{
           templateUrl: 'home.html',
           controller: 'HomeCtrl'
         }
@@ -57,7 +59,7 @@ angular.module('Acionic', ['ionic', 'config', 'Acionic.controllers', 'gettext', 
         }
       },
       views: {
-        'menuContent' :{
+        menuContent :{
           templateUrl: 'settings.html',
           controller: 'SettingsCtrl'
         }
@@ -73,7 +75,7 @@ angular.module('Acionic', ['ionic', 'config', 'Acionic.controllers', 'gettext', 
         languages: 'Languages'
       },
       views: {
-        'menuContent' :{
+        menuContent :{
           templateUrl: 'preferences.html',
           controller: 'PreferencesCtrl'
         }
@@ -83,7 +85,7 @@ angular.module('Acionic', ['ionic', 'config', 'Acionic.controllers', 'gettext', 
       url: '/courses-menu',
       parent: 'app',
       views: {
-        'menuContent' :{
+        menuContent :{
           templateUrl: 'courses-menu.html',
           controller: 'CoursesMenuCtrl'
         }
@@ -93,7 +95,7 @@ angular.module('Acionic', ['ionic', 'config', 'Acionic.controllers', 'gettext', 
       url: '/courses/:groupId',
       parent: 'app',
       views: {
-        'menuContent' :{
+        menuContent :{
           templateUrl: 'courses-filtered.html',
           controller: 'CoursesGroupCtrl'
         }
@@ -105,7 +107,7 @@ angular.module('Acionic', ['ionic', 'config', 'Acionic.controllers', 'gettext', 
       url: '/courses/:courseId',
       parent: 'app',
       views: {
-        'menuContent' :{
+        menuContent :{
           templateUrl: 'courses-filtered.html',
           controller: 'CoursesGroupCtrl'
         }
@@ -114,7 +116,7 @@ angular.module('Acionic', ['ionic', 'config', 'Acionic.controllers', 'gettext', 
     .state('app.browse', {
       url: '/browse',
       views: {
-        'menuContent' :{
+        menuContent :{
           templateUrl: 'browse.html'
         }
       }
@@ -122,16 +124,16 @@ angular.module('Acionic', ['ionic', 'config', 'Acionic.controllers', 'gettext', 
     .state('app.playlists', {
       url: '/playlists',
       views: {
-        'menuContent' :{
+        menuContent :{
           templateUrl: 'playlists.html',
-          controller: 'PlaylistsCtrl'
+          Controller: 'PlaylistsCtrlc'
         }
       }
     })
     .state('app.single', {
       url: '/playlists/:playlistId',
       views: {
-        'menuContent' :{
+        menuContent :{
           templateUrl: 'playlist.html',
           controller: 'PlaylistCtrl'
         }

@@ -42,25 +42,30 @@ angular.module('Acionic.controllers', ['Acionic.services', 'ngCordova'])
       .catch($scope.loginError)
       .then(User.user);
   };
-    })
+})
 .controller('HomeCtrl', function($scope, homeModel){
     $scope.pages = homeModel.pages;
   })
 .controller('SettingsCtrl',  function($scope, user){
+  $scope.isSaving = false;
   $scope.user = user;
 
   $scope.updateUser = function(form){
     if (!form.$invalid){
-      user.put();
+      $scope.isSaving = true;
+      user.put().then(function(user){$scope.isSaving = false;});
     }
   };
 })
-.controller('PreferencesCtrl',  function($scope, userProfile, languages, $cordovaFile, $cordovaCamera, AuthTokenStorage){
+.controller('PreferencesCtrl',  function($scope, userProfile, languages, $cordovaFile, $cordovaCamera, AuthTokenStorage, growl){
   var _imageChanged = false;
   console.log('lang:'+userProfile.lang);
+  $scope.isSaving = false;
   $scope.profile = userProfile;
   $scope.languages = languages;
-
+  if (_.isEmpty(userProfile.avatar)){
+    userProfile.avatar = 'http://placehold.it/100x100';
+  }
   $scope.getPhoto = function() {
     // Retrieve image file location from specified source
     $cordovaCamera.getPicture({ quality: 50,
@@ -68,7 +73,6 @@ angular.module('Acionic.controllers', ['Acionic.services', 'ngCordova'])
                                 sourceType: Camera.PictureSourceType.PHOTOLIBRARY })
     .then(function(image){
       $scope.profile.avatar = image;
-      $scope.profile.avatar_url = image;
       _imageChanged = true;
     });
   };
@@ -76,13 +80,13 @@ angular.module('Acionic.controllers', ['Acionic.services', 'ngCordova'])
   $scope.updateProfile = function(form){
     var profile = $scope.profile;
     var params = {lang: profile.lang};
-    console.log('lang:'+profile.lang);
 
     if (!form.$invalid){
+      $scope.isSaving = true;
       if (_imageChanged){
         var options = new FileUploadOptions();
         // get filename from full path
-        var filename = profile.avatar.substr(profile.avatar.lastIndexOf("/")+1);
+        var filename = profile.avatar.substr(profile.avatar.lastIndexOf('/')+1);
         console.log('filename:'+filename);
         options.fileKey = 'avatar';
         options.fileName = filename;
@@ -93,10 +97,7 @@ angular.module('Acionic.controllers', ['Acionic.services', 'ngCordova'])
 
         var uri = profile.url;
         var fileSrc = profile.avatar;
-        if (fileSrc.lastIndexOf(':') == -1){
-          fileSrc = '';
-        }
-        console.log('fileSrc:'+fileSrc);
+
         $cordovaFile.uploadFile(uri, fileSrc, options)
           .then(function(result) {
             // Success!
@@ -104,23 +105,47 @@ angular.module('Acionic.controllers', ['Acionic.services', 'ngCordova'])
             _imageChanged = false; // allow image to change again once saved
           }, function(err) {
             // Error
-            _.forOwn(err, function(num, key){console.log(key +":" + err[key])});
+            _.forOwn(err, function(num, key){console.log(key +':' + err[key]);});
             console.log('err:'+err);
           }, function (progress) {
             // constant progress updates
-          });
+          })
+          .finally(function(){$scope.isSaving = false;});
       } else {
-        // image didn't change use PATCH to update other field(s)
-        profile.patch(params);
+        profile.patch(params)
+          .then(function(){growl.addSuccessMessage('Saved your changes');})
+          .catch(function(){growl.addErrorMessage('Sorry there was a problem saving your changes', {ttl: 10000});})
+          .finally(function(){ $scope.isSaving = false;});
       }
-    };
-  }
+    }
+  };
 })
-.controller('CoursesMenuCtrl', function($scope, settings, coursesMenuModel){
-    $scope.currentPage = _.assign({section: 'courses'}, coursesMenuModel.currentPage);
-    $scope.pages = _.forEach(settings.data.subscriptions.courses.concat(coursesMenuModel.pages),
+.controller('CoursesMenuCtrl', function($scope, $ionicPopover, settings, coursesMenuModel){
+  $scope.currentPage = _.assign({section: 'courses'}, coursesMenuModel.currentPage);
+
+  function buildPopover(obj){
+    var popover = $ionicPopover.fromTemplate('<ion-popover-view class="fit"><ion-content>'+ obj.info +'</ion-content></ion-popover-view>');
+    obj.popover = popover;
+    $scope.$on('$destroy', function() {
+      obj.popover.remove();
+    });
+    obj.displayInfo = function(event){
+      obj.popover.show(event);
+      event.preventDefault();
+      event.stopPropagation();
+    };
+  };
+  $scope.designs = _.forEach(coursesMenuModel.designs,
                              function(obj){_.assign({section: 'courses'}, obj);
+                                           buildPopover(obj);
                                           });
+    $scope.filters = _.forEach(coursesMenuModel.filters,
+                             function(obj){_.assign({'section': 'courses'}, obj);
+                                          });
+    $scope.subscriptions = _.forEach(settings.data.subscriptions.courses,
+                                     function(obj){_.assign({section: 'courses'}, obj);
+                                                   buildPopover(obj);
+                                                  });
 })
 .controller('CoursesGroupCtrl', function($stateParams, $scope, CourseGroupService){
 //    $scope.currentPage = coursesMenuModel.currentPage;

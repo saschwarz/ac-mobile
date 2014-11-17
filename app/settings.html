@@ -9,6 +9,7 @@
       </ion-item>
     </ion-list>
     <form ng-submit="updateUser(user)" novalidate>
+      <fieldset ng-disabled="isSaving">
       <div class="list">
         <ion-item class="item-icon-right" ui-sref='preferences'>
           <span>Preferences</span>
@@ -18,8 +19,8 @@
           <span>Dogs</span>
           <i class="icon ion-chevron-right icon-accessory"></i>
         </ion-item>
+        <div class="item item-divider" translate>Your Account Information</div>
         <div id="messages" class="alert alert-success" ng-show="messages" ng-bind="messages"></div>
-        <div ng-show="progress.active()" style="color: red; font-size: 50px;" translate>Saving&hellip;</div>
         <label class="item item-input">
           <span class="input-label">First Name</span>
           <input type="text" name="name" ng-model="user.first_name"/>
@@ -43,9 +44,8 @@
           <input type="text" value="{{user.date_joined | date:'fullDate'}}" readonly />
         </label>
       </div>
-      <div class="padding">
-        <button type="submit" ng-disabled="progress.active()" class="button button-block button-positive" translate>Save</button>
-      </div>
+      <button type="submit" ng-disabled="progress.active()" class="button button-block button-positive icon-right">Save <span><i class="ion-ios7-reloading" ng-cloak ng-show="isSaving"></i></span></button>
+      </fieldset>
     </form>
   </ion-content>
 </ion-view>

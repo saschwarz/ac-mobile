@@ -9,4 +9,6 @@
     </author>
   <content src="index.html"/>
   <access origin="*"/>
+  <!-- keep localstorage from being transfered to iCloud -->
+  <preference name="BackupWebStorage" value="none" />
 </widget>

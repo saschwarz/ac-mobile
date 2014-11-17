@@ -123,45 +123,29 @@ angular.module('Acionic.services', ['restangular', 'LocalStorageModule'])
   };
 })
 .service('settings', function(){
-    // TODO get this via API
-    this.data = {
-        user: {
-            id: 1,
-            name: 'agilitynerd',
-            firstname: 'Steve',
-            lastname: 'Schwarz',
-            joined: '2014-01-01',
-            image: '',
-            lang: 'en_US'
-        },
-        dogs: [{
-            id: 1,
-            name: 'Flyer',
-            birthday: '2011-07-11',
-            breed: 'Border Collie',
-            image: ''
-        }],
-        subscriptions: {
-            courses: [{
-                name: 'AgilityNerd',
-                state: 'courses-group({groupId: 1})',
-                url: '',
-                image: ''
-            }],
-            workouts: [{
-                name: 'AgilityNerd',
-                state: 'courses-group',
-                url: '',
-                image: ''
-            }],
-            warmups: [{
-                name: 'AgilityNerd',
-                state: 'courses-group',
-                url: '',
-                image: ''
-            }]
-        }
-    };
+  // TODO get this via API
+  this.data = {
+    subscriptions: {
+      courses: [{
+        name: 'AgilityNerd',
+        state: 'courses-group({groupId: 1})',
+        url: '',
+        image: ''
+      }],
+      workouts: [{
+        name: 'AgilityNerd',
+        state: 'courses-group',
+        url: '',
+        image: ''
+      }],
+      warmups: [{
+        name: 'AgilityNerd',
+        state: 'courses-group',
+        url: '',
+        image: ''
+      }]
+    }
+  };
 })
 .service('homeModel', function(){
   this.pages = [
@@ -172,13 +156,16 @@ angular.module('Acionic.services', ['restangular', 'LocalStorageModule'])
   ];
 })
 .service('coursesMenuModel', function(){
-    this.currentPage = {name: 'Courses', state: 'courses-menu'};
-    this.pages = [
-        {name: 'Design Your Own', state: 'courses-menu'},
-        {name: 'Browse', state: 'courses-menu'}
-      ];
+  this.currentPage = {name: 'Courses', state: 'courses-menu'};
+  this.filters = [
+    {name: 'Browse', state: 'courses-browse'}
+  ];
+  this.designs = [
+    {name: 'Choose Skills', state: 'courses-menu', info: 'stuff'},
+    {name: 'Choose Layout', state: 'courses-layout', info: 'more stuff'},
+    {name: 'Course Designer', state: 'courses-menu', info: 'still more stuff'}
+  ];
 })
-
 .factory('CourseGroupService', function(Restangular){
   var responseInterceptor = function(data, operation) {
     var extractedData;
