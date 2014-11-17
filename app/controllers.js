@@ -113,8 +113,8 @@ angular.module('Acionic.controllers', ['Acionic.services', 'ngCordova'])
           .finally(function(){$scope.isSaving = false;});
       } else {
         profile.patch(params)
-          .then(function(){growl.addSuccessMessage('Saved your changes');})
-          .catch(function(){growl.addErrorMessage('Sorry there was a problem saving your changes', {ttl: 10000});})
+          .then(function(){growl.success('Saved your changes');})
+          .catch(function(){growl.error('Sorry there was a problem saving your changes', {ttl: 10000});})
           .finally(function(){ $scope.isSaving = false;});
       }
     }
