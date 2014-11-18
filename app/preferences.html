@@ -11,8 +11,6 @@
     <fieldset ng-disabled="isSaving">
     <form ng-submit="updateProfile(profile)" novalidate>
       <div class="list list-inset">
-        <div id="messages" class="alert alert-success" ng-show="messages" ng-bind="messages"></div>
-        <div ng-show="progress.active()" style="color: red; font-size: 50px;" translate>Saving&hellip;</div>
         <label class="item item-input item-select">
           <span class="input-label" translate>Language</span>
           <select ng-model="profile.lang"

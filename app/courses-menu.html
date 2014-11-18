@@ -7,7 +7,7 @@
       <ion-item class="item item-image {{currentPage.section}}" href="#{{currentPage.state}}">
         <item-image section="currentPage.section" page="currentPage"/>
       </ion-item>
-      <ion-item class="item-divider" translate>Design Your Own</ion-item>
+      <ion-item class="item-divider" translate>Design A Course</ion-item>
       <ion-item class="item-icon-right item-icon-left item-button-right ac-item" ng-repeat="design in designs" ui-src="{{item.page}}">
         <i class="icon ion-stop courses"></i>
         {{design.name}}
@@ -16,13 +16,13 @@
           <button class="button button-small button-icon button-clear icon ion-ios7-information-outline" ng-click="design.displayInfo($event)"></button>
         </div>
       </ion-item>
-      <ion-item class="item-divider" translate>Browse</ion-item>
+      <ion-item class="item-divider" translate>Browse Courses</ion-item>
       <ion-item class="item-icon-right item-icon-left ac-item" ng-repeat="filter in filters" ui-sref='{{filter.state}}'>
         <i class="icon ion-stop courses"></i>
         {{filter.name}}
         <i class="icon ion-chevron-right icon-accessory"></i>
       </ion-item>
-      <ion-item class="item-divider" translate>Subscriptions</ion-item>
+      <ion-item class="item-divider" translate>Course Subscriptions</ion-item>
       <ion-item class="item-icon-right item-icon-left item-button-right ac-item" ng-repeat="subscription in subscriptions" ui-sref='{{subscription.state}}'>
         <i class="icon ion-stop courses"></i>
         {{subscription.name}}

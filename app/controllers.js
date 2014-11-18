@@ -46,14 +46,21 @@ angular.module('Acionic.controllers', ['Acionic.services', 'ngCordova'])
 .controller('HomeCtrl', function($scope, homeModel){
     $scope.pages = homeModel.pages;
   })
-.controller('SettingsCtrl',  function($scope, user){
+.controller('SettingsCtrl',  function($scope, growl, user){
   $scope.isSaving = false;
   $scope.user = user;
 
   $scope.updateUser = function(form){
     if (!form.$invalid){
       $scope.isSaving = true;
-      user.put().then(function(user){$scope.isSaving = false;});
+      user.put()
+        .then(function(){
+          growl.success('Saved your changes');
+        })
+        .catch(function(){growl.error('Sorry there was a problem saving your changes', {ttl: 10000});})
+        .finally(function(){
+          $scope.isSaving = false;
+        });
     }
   };
 })

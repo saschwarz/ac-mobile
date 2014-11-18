@@ -54,8 +54,8 @@ angular.module('Acionic', ['ionic', 'ngAnimate', 'config', 'Acionic.controllers'
       url: '/settings',
       parent: 'app',
       resolve: {
-        user: function(User){
-          return User.user();
+        user: function(User, Communication){
+          return User.user().catch(Communication.error);
         }
       },
       views: {
@@ -69,8 +69,8 @@ angular.module('Acionic', ['ionic', 'ngAnimate', 'config', 'Acionic.controllers'
       url: '/preferences',
       parent: 'app',
       resolve: {
-        userProfile: function(UserProfile){
-          return UserProfile.profile();
+        userProfile: function(UserProfile, Communication){
+          return UserProfile.profile().catch(Communication.error);
         },
         languages: 'Languages'
       },

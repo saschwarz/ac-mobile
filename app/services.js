@@ -14,6 +14,15 @@ angular.module('Acionic.services', ['restangular', 'LocalStorageModule'])
           ['lt', 'Lithuanian']
          ];
 })
+.service('Communication', function(growl){
+  this.error = function(e){
+    if (e.status === 0) {
+      growl.error("Sorry I couldn't connect to the server. Please try again.", {ttl: 10000});
+    } else {
+      growl.error("There was an error while communicating with the server. Please try again.", {ttl: 10000});
+    }
+  };
+})
 .service('AuthTokenStorage', function(localStorageService){
   var _authTokenName = 'com.agilitycourses.authToken';
   this.set = function(token){
